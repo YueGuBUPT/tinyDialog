@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="tinyDialog.css">
+	<title>tinyDialog demo</title>
+	<style>
+		#wide_and_long{
+			width:3000px;
+			height:3000px;
+		}
+		.float{
+			float: left;
+			width: 45%;
+			border:1px solid #000;
+			padding:10px;
+			margin:10px;
+			/*box-sizing:border-box;*/
+		}
+		#code{
+			overflow: auto;
+			width: 95%;
+			min-height: 341px;
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<div class="float">
+		<b>快捷方式：</b>
+	<button id="default" data-code="tinyDialog()">default</button>
+	<button id="alert" data-code="tinyDialog.alert('alert',function(){alert('点了确认')})">alert</button>
+	<button id="confirm" data-code="tinyDialog.confirm('confirm',function(){alert('点了确认')},function(){alert('点了取消')})">confirm</button>
+	<button id="prompt" data-code="tinyDialog.prompt('prompt','defaultPrompt',function(e,tinyDialogObjectInstance,userInput){alert('点了确认，输入的是：'+userInput)},function(e,tinyDialogObjectInstance,userInput){alert('点了取消，输入的是：'+userInput)})">prompt</button>
+	<hr>
+		<b>定制：</b>
+		<table id="custom_table" border="1" style="border-collapse:collapse;">
+			<tr>
+				<th>项</th>
+				<th>值</th>
+			</tr>
+			<tr>
+				<td>标题</td>
+				<td><input type="text" value="消息" class="opt" data-key="title" title="任意html字符串"></td>
+			</tr>
+			<tr>
+				<td>内容</td>
+				<td><input type="text" value="<i>消息内容</i>" class="opt" data-key="content" title="任意html字符串"></td>
+			</tr>
+			<tr>
+				<td>宽度</td>
+				<td><input type="number" value="200" class="opt" data-key="width" title="任意自然数，单位像素"></td>
+			</tr>
+			<tr>
+				<td>高度</td>
+				<td><input type="number" value="150" class="opt" data-key="height" title="任意自然数，单位像素"></td>
+			</tr>
+			<tr>
+				<td>是否背景遮罩</td>
+				<td><input type="checkbox" checked="checked" class="opt" data-key="mask"></td>
+			</tr>
+			<tr>
+				<td>是否有右上角关闭按钮</td>
+				<td><input type="checkbox" class="opt" data-key="closeX"></td>
+			</tr>
+			<tr>
+				<td>按钮</td>
+				<td>
+					<table class="opt_button">
+						<tr><td>文字：<td><td><input class="opt_button_value" value="确定" title="任意文本，不含html字符"></td></tr>
+						<tr><td>类型：<td><td><input class="opt_button_type" title="任意文本，不含html字符" /></td></tr>
+						<tr><td>点击是否关闭dialog：<td><td><input class="opt_button_click" type="checkbox" checked="checked"/></td></tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>未加入表格的配置项，具体请参阅文档</td>
+				<td>
+					<ol>
+						<li>autoShow：初始化完成后是否自动显示</li>
+						<li>clickCloseX：点击“×”（叉叉）后的回调函数</li>
+						<li>init：初始化完成后的回调函数</li>
+						<li>warpperCssClass：对话框最外层DOM的css样式类</li>
+						<li>titleCssClass：对话框标题DOM的css样式类</li>
+						<li>contentOuterCssClass：对话框内容外层DOM的css样式类</li>
+						<li>contentCssClass：对话框内容内层DOM的css样式类</li>
+						<li>buttonsAreaCssClass：对话框按钮区域外层DOM的css样式类</li>
+						<li>buttonCssClass：对话框各按钮DOM的css样式类</li>
+						<li>otherTypeButtonCssClassPrefix：对话框自定义类别按钮DOM的css样式类的前缀</li>
+						<li>lastButtonCssClass：对话框最后一个按钮DOM的css样式类</li>
+						<li>closeXCssClass：对话框中“×”（叉叉）DOM的css样式类</li>
+					</ol>
+				</td>
+			</tr>
+		</table>
+		<button id="add_button">增加一个按钮</button><br/>
+		<hr>
+		<button id="custom_code">生成代码</button>
+	</div>
+	<div class="float">
+		<b>代码：</b>
+		<textarea id="code"></textarea>
+		<hr>
+		<button id="custom_run">运行</button>
+	</div>
+	<div id="wide_and_long"></div>
+	<script src="http://webmap2.map.bdimg.com/yyfm/jQuery_1.x/1.10.2/js/jQuery_1.x.min.js"></script>
+	<script src="http://bcs.duapp.com/jieyou-storage/consoleEnable.js"></script>
+	<script src="tinyDialog.js"></script>
+	<script>
+		$(function(){
+			var	$code = $('#code')
+			function removeJsPunctuation(str){
+				return (typeof(str)=='string')?str.replace(/[\(\)\[\]\{\}\,\.\'\"]/g,''):str
+			}
+			$.each(['default','alert','confirm','prompt'],function(i,e){
+				var $this = $('#'+e)
+				$this.on('click',function(){
+					$code.val($this.data('code'))
+				})
+			})
+			$('#custom_code').on('click',function(){
+				var tmp = ['tinyDialog({'],
+					$opts = $('.opt'),
+					len = $opts.length,
+					$optButtons = $('.opt_button'),
+					btnCount = $optButtons.length
+				$opts.each(function(i){
+					var $this = $opts.eq(i),
+						type = $this.attr('type'),
+						val
+					if(type == 'checkbox'){
+						val = !!$this.prop('checked')
+					}else if(type == 'number'){
+						val = $this.val()
+					}else{
+						val = '\''+removeJsPunctuation($this.val())+'\''
+					}
+					tmp.push('\''+$this.data('key')+'\':'+val)
+					if(len != (i+1)){
+						tmp.push(',')
+					}
+				})
+				if(btnCount != 0){
+					tmp.push(',\'buttons\':[')
+					$optButtons.each(function(i){
+						var $this = $optButtons.eq(i),
+							valueVal = removeJsPunctuation($this.find('.opt_button_value').val()),
+							typeVal = removeJsPunctuation($this.find('.opt_button_type').val()),
+							close = !!$this.find('.opt_button_click').prop('checked'),
+							_tmp = []
+						tmp.push('{')
+						if(valueVal){
+							_tmp.push('\'value\':\''+valueVal+'\'')
+						}
+						if(typeVal){
+							_tmp.push('\'type\':\''+typeVal+'\'')
+						}
+						if(!close){
+							_tmp.push('\'click\':function(){return false}')
+						}
+						tmp.push(_tmp.join(','))
+						tmp.push('}')
+						if(btnCount != (i+1)){
+							tmp.push(',')
+						}
+					})
+					tmp.push(']')
+				}
+				tmp.push('})')
+				$code.val(tmp.join(''))
+			})
+			$('#add_button').on('click',function(){
+				$('#custom_table').append(
+					'<tr>'
+						+'<td>按钮</td>'
+						+'<td>'
+							+'<table class="opt_button">'
+								+'<tr><td>文字：<td><td><input class="opt_button_value" value="取消" title="任意文本，不含html字符"></td></tr>'
+								+'<tr><td>类型：<td><td><input class="opt_button_type" value="secondary" title="任意文本，不含html字符" /></td></tr>'
+								+'<tr><td>点击是否关闭dialog：<td><td><input class="opt_button_click" type="checkbox" checked="checked"/></td></tr>'
+							+'</table>'
+						+'</td>'
+					+'</tr>'
+				)
+			})
+			$('#custom_run').on('click',function(){
+				eval($code.val())
+			})
+		})
+	</script>
+</body>
+</html> 

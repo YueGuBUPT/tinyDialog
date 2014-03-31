@@ -1,0 +1,198 @@
+h1. tinyDialog
+
+tinyDialog是一个基于jQuery或zepto的轻量级的对话框弹出组件，在压缩和gzip后，js文件大小均为1.4k左右，默认css样式大小在0.8k左右。
+
+它是基于jQuery编写的，也可以用于zepto。适用平台：IE6+、Chorme、FireFox、Opera、Safari、iOS 5.0+、Android 2.2+
+
+它的默认样式设计是参考的 "artDialog（基于LGPL协议）":https://github.com/aui/artDialog 的blue 皮肤。
+
+h1. 当前用户
+* "百度地图":http://map.baidu.com/
+* "百度团购":http://tuan.baidu.com/
+* +You
+
+h1. 使用方法
+
+h2. 引入页面
+
+tinyDialog基于jQuery或Zepto，将这些js引入你的页面，建议置于 @body@ 结束标签之前
+
+<pre><script src="jquery.js"></script>或<script src="zepto.js"></script>
+<script src="tinyDialog.min.js"></script>
+<!-- 可以使用我们提供的CDN服务器 -->
+<script src="//webmap2.map.bdimg.com/yyfm/jQuery_1.x/1.10.2/js/jQuery_1.x.min.js"></script>或<script src="//webmap2.map.bdimg.com/yyfm/zepto/1.0/js/zepto.min.js"></script>
+<script src="//webmap3.map.bdimg.com/yyfm/tinyDialog/1.0.0/js/tinyDialog.min.js"></script>
+</pre>
+另外我们还提供了预设的样式，也请同时引入，建议置于 @head@ 内
+
+<pre><link rel="stylesheet" href="tinyDialog.min.css" />
+<!-- 可以使用我们提供的CDN服务器 -->
+<link rel="stylesheet" href="//webmap3.map.bdimg.com/yyfm/tinyDialog/1.0.0/css/tinyDialog.min.css" /></pre>
+
+同时确保b.png置于 tinyDialog.min.css 同一路径。如果你想将b.png置于其它位置，请参阅 `自定义样式` 节，来覆盖部分样式。
+
+h2. 调用
+
+只需要这一句，就能创建并显示一个默认的对话框弹窗
+
+<pre>
+tinyDialog(options)
+// 如：将使用全部默认配置显示一个对话框
+tinyDialog()</pre>
+
+h3. options字段
+
+下面是options的全部字段：
+
+* @title@ String 对话框的标题，可以为任意html字符串默认为 @'消息'@
+* @content@ String 对话框的内容，可以为任意html字符串默认为 @''@
+* @width@ Number 对话框的宽度，单位像素，默认 @300@
+* @height@ Number 对话框的宽度，单位像素，默认 @300@
+* @mask@ Boolean 对话框是否有背景遮罩，如果有得话整个背景将被一个半透明黑色层遮住，用户只能和当前对话框交互，默认 @true@
+* @closeX@ Boolean 对话框是否有右上角的关闭按钮（当然可以通过定制css来调整它的位置），默认 @false@
+* @clickCloseX@ Function 点击上述关闭按钮后的回调函数，函数中this指向被点击按钮的DOM，第一个参数e为事件对象，第二个参数tinyDialogObjectInstance为当前tinyDialog实例对象，默认为空函数 @function(e,tinyDialogObjectInstance){}@
+* @init@ Function 当一个新的tinyDialog实例对象初始化完毕后的回调函数，函数中this指向当前tinyDialog实例对象，默认为空函数 @function(){}@
+* @warpperCssClass@ String 对话框最外层DOM的css样式类，默认 @'tinyDialog_wrapper'@
+* @warpperCssClass@ String 对话框标题的css样式类，默认 @'tinyDialog_title'@
+* @contentOuterCssClass@ String 对话框内容外层DOM的css样式类，默认 @'tinyDialog_content_outer'@
+* @contentCssClass@ String 对话框内容内层DOM的css样式类，默认 @'tinyDialog_content'@
+* @buttonsAreaCssClass@ String 对话框按钮区域外层DOM的css样式类，默认 @'tinyDialog_buttons_area'@
+* @buttonCssClass@ String 对话框各按钮的css样式类，默认 @'tinyDialog_button'@
+* @otherTypeButtonCssClassPrefix@ String 对话框自定义类别按钮的css样式类的前缀，默认 @'tinyDialog_button_'@
+* @lastButtonCssClass@ String 对话框最后一个按钮的css样式类，默认 @'tinyDialog_last_button'@
+* @closeXCssClass@ String 对话框中关闭按钮的css样式类，默认 @'tinyDialog_close_x'@
+* @buttons@ Array 对话框中包含的按钮，数组中每一个项均为一个对象（{}），它对应一个按钮。
+目前这个对象有三个字段，第一个 @value@ 为按钮上显示的文字，第二个 @click@ 为点击该按钮后的回调函数。
+该回调函数中this指向被点击按钮的DOM，第一个参数e为事件对象，第二个参数tinyDialogObjectInstance为当前tinyDialog实例对象。
+如果上述回调函数return false，则点击按钮后不会自动关闭当前对话框。
+第三个为按钮的样式类型。目前预设了默认和 @secondary@ 两种样式类型，你可以任意添加样式类型，并自行在css文件使用 @otherTypeButtonCssClassPrefix+类型名称{}@ 中编写对应的样式（otherTypeButtonCssClassPrefix在上面可配，默认为 @'tinyDialog_button_'@ ）。
+默认 @[{'value':'确定'}]@
+例：一个点击后不会自动关闭对话框的按钮，样式类型为自定义的“green”，上面的文字是“点击不关闭”，写法将会是这样：
+
+<pre>
+/* css 文件*/
+.tinyDialog_button_green{
+	background:#7cb61b;
+	background:-webkit-linear-gradient(top,#98d237,#7cb61b);
+	background:-moz-linear-gradient(top,#98d237,#7cb61b);
+	background:-ms-linear-gradient(top,#98d237,#7cb61b);
+	background:linear-gradient(top,#98d237,#7cb61b);
+	border: 1px solid #999;
+	text-shadow:0px 1px 1px #679a10;
+	color:#fff;
+}	
+</pre>
+
+<pre>tinyDialog({
+	'buttons':[
+		{
+			'value':'点击不关闭',
+			'type':'green',
+			'click':function(){
+				return false
+			}
+		}
+	]
+})</pre>
+
+h2. 更改默认
+
+h3. 更改tinyDialog默认配置
+
+上述配置项的默认配置可以通过可读可写的 @tinyDialog.config.defaultOptions@ 对象来配置。
+如，更改默认配置中closeX为true，即默认有右上角关闭按钮，可以在初始化tinyDialog对象实例之前，调用：
+
+<pre>tinyDialog.config.defaultOptions.closeX = true</pre>
+
+h3. 更改其它默认配置
+
+除了上述配置项之外，其它的配置项置于 @tinyDialog.config.otherOptions@ 中，目前这之中只有一项：
+* @maskCssClass@ String 背景遮罩的css样式类，默认 @'tinyDialog_mask'@ ，同样可以更改默认配置，如：
+
+<pre>tinyDialog.config.otherOptions.maskCssClass = 'my_tinyDialog_mask'</pre>
+
+h3. 自定义样式
+
+你可以自行定义样式来覆盖掉默认的样式，请保证自定义样式的优先级高于默认样式，通常情况下将自定义样式后引入即可。
+
+<pre><link rel="stylesheet" href="tinyDialog.min.css" />
+<link rel="stylesheet" href="yourCustomStyles.css" /></pre>
+
+例如，要更改对话框内的字体大小为12px（默认样式为14px），只需要在yourCustomStyles.css中编写：
+
+<pre>.tinyDialog_wrapper{font-size:12px;}</pre>
+
+h2. 实例方法
+
+通过调用tinyDialog(options)或下面的“预设快捷方式”，将返回一个tinyDialog实例对象，如：
+
+<pre>var myMiniDialog = tinyDialog({
+    'title':'tinyDialog实例对象',
+    'content':'这是我的tinyDialog实例对象'
+})</pre>
+
+目前它有三个方法
+* show() 显示
+* hide() 隐藏，隐藏当前tinyDialog实例对象，如果所有需要背景遮罩（mask）的tinyDialog实例对象都已经隐藏，则背景遮罩也会隐藏
+* remove() 移除，当确定该tinyDialog实例对象不再需要使用时，可以调用这个方法将它移除，以便于释放资源。
+
+<pre>myMiniDialog.show()
+myMiniDialog.hide()
+myMiniDialog.remove()</pre>
+
+h2. 预设快捷方式
+
+预设了模仿浏览器alert、confirm、prompt快捷方式，调用很简单
+
+h3. alert
+
+<pre>
+tinyDialog.alert(stringToShow,callbackFunctionWhenClickOkButton,options,noRemoveWhenClose)
+// 如：
+tinyDialog.alert('alert',function(e,tinyDialogObjectInstance){
+    alert('点了确认')
+})</pre>
+参数：
+* @stringToShow@ String alert显示的字符串
+* @callbackFunctionWhenClickOkButton@ Function 点击“确定”按钮时的回调函数，函数中this指向被点击按钮的DOM，第一个参数e为事件对象，第二个参数tinyDialogObjectInstance为当前tinyDialog实例对象
+* @options@ Object 其它配置项，具体参见 `options字段`
+* @noRemoveWhenClose@ Boolean 这些快捷调用方法在调用一次后即自动移除（调用.remove()），此项如果为true，则不会自动移除
+
+h3. confirm
+
+<pre>
+tinyDialog.confirm(stringToShow,callbackFunctionWhenClickOkButton,callbackFunctionWhenClickCancelButton,options,noRemoveWhenClose)
+// 如：
+tinyDialog.confirm('confirm',function(e,tinyDialogObjectInstance){
+    alert('点了确认')
+},function(){
+    alert('点了取消')
+})</pre>
+参数：
+* @stringToShow@ String confirm显示的字符串
+* @callbackFunctionWhenClickOkButton@ Function 点击“确定”按钮时的回调函数，函数中this指向被点击按钮的DOM，第一个参数e为事件对象，第二个参数tinyDialogObjectInstance为当前tinyDialog实例对象
+* @callbackFunctionWhenClickCancelButton@ Function 点击“取消”按钮时的回调函数，函数中this指向被点击按钮的DOM，第一个参数e为事件对象，第二个参数tinyDialogObjectInstance为当前tinyDialog实例对象
+* @options@ Object 其它配置项，具体参见 `options字段`
+* @noRemoveWhenClose@ Boolean 这些快捷调用方法在调用一次后即自动移除（调用.remove()），此项如果为true，则不会自动移除
+
+h3. prompt
+
+<pre>
+tinyDialog.prompt(stringToShow,defaultInputString,callbackFunctionWhenClickOkButton,callbackFunctionWhenClickCancelButton,options,noRemoveWhenClose)
+// 如：
+tinyDialog.prompt('prompt','defaultPrompt',function(e,tinyDialogObjectInstance,userInput){
+    alert('点了确认，输入的是：'+userInput)
+},function(e,tinyDialogObjectInstance,userInput){
+    alert('点了取消，输入的是：'+userInput)
+})</pre>
+参数：
+* @stringToShow@ String prompt显示的字符串
+* @defaultInputString@ String prompt输入框的默认值
+* @callbackFunctionWhenClickOkButton@ Function 点击“确定”按钮时的回调函数，函数中this指向被点击按钮的DOM，第一个参数e为事件对象，第二个参数tinyDialogObjectInstance为当前tinyDialog实例对象，第三个参数是当前输入框中的值
+* @callbackFunctionWhenClickCancelButton@ Function 点击“取消”按钮时的回调函数，函数中this指向被点击按钮的DOM，第一个参数e为事件对象，第二个参数tinyDialogObjectInstance为当前tinyDialog实例对象，第三个参数是当前输入框中的值
+* @options@ Object 其它配置项，具体参见 `options字段`
+* @noRemoveWhenClose@ Boolean 这些快捷调用方法在调用一次后即自动移除（调用.remove()），此项如果为true，则不会自动移除
+
+h1. License
+
+所有代码基于 "MIT License":http://www.opensource.org/licenses/mit-license.php. 即你可以随意使用和更改，但请保留原作者名和项目链接。
