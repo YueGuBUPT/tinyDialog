@@ -64,7 +64,7 @@
 		})
 	}
 
-	function MiniDialog(options){
+	function TinyDialog(options){
 		var tmp,
 			$tmpButton,
 			self = this,
@@ -140,7 +140,7 @@
 			self.show()
 		}
 	}
-	MiniDialog.prototype.show = function(){
+	TinyDialog.prototype.show = function(){
 		if(!this.isShow && this.$){
 			if(this.mask){
 				if($mask){
@@ -162,7 +162,7 @@
 		}
 	}
 
-	MiniDialog.prototype.hide = function(){
+	TinyDialog.prototype.hide = function(){
 		if(this.isShow){
 			this.isShow = false
 			if(this.mask){
@@ -176,20 +176,20 @@
 			}
 		}
 	}
-	MiniDialog.prototype.remove = function(){
+	TinyDialog.prototype.remove = function(){
 		this.hide()
 		this.$.remove()
 	}
 
 	function out(options){
-		return new MiniDialog(options)
+		return new TinyDialog(options)
 	}
 	out.config = {
 		defaultOptions:defaultOptions,
 		otherOptions:otherOptions
 	}
 	out.alert = function(msg,okFunction,options,noRemoveWhenClose){
-		return new MiniDialog($.extend({
+		return new TinyDialog($.extend({
 			content:msg,
 			buttons:[
 				{
@@ -205,7 +205,7 @@
 		},options))
 	}
 	out.confirm = function(msg,okFunction,cancelFunction,options,noRemoveWhenClose){
-		return new MiniDialog($.extend({
+		return new TinyDialog($.extend({
 			content:msg,
 			buttons:[
 				{
@@ -232,7 +232,7 @@
 	}
 	out.prompt = function(msg,defaultPrompt,okFunction,cancelFunction,options,noRemoveWhenClose){
 		var inputClass = 'tinyDialog_prompt_input'
-		return new MiniDialog($.extend({
+		return new TinyDialog($.extend({
 			content:['<div style="margin-bottom:5px">',msg,'</div><div><input class="',inputClass,'" style="width:175px;padding:6px 4px" value="',defaultPrompt,'"/></div>'].join(''),
 			buttons:[
 				{
