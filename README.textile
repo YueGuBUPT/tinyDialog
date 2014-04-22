@@ -126,7 +126,7 @@ h2. 实例方法
 
 通过调用tinyDialog(options)或下面的“预设快捷方式”，将返回一个tinyDialog实例对象，如：
 
-<pre>var myMiniDialog = tinyDialog({
+<pre>var myTinyDialog = tinyDialog({
     'title':'tinyDialog实例对象',
     'content':'这是我的tinyDialog实例对象'
 })</pre>
@@ -136,9 +136,9 @@ h2. 实例方法
 * hide() 隐藏，隐藏当前tinyDialog实例对象，如果所有需要背景遮罩（mask）的tinyDialog实例对象都已经隐藏，则背景遮罩也会隐藏
 * remove() 移除，当确定该tinyDialog实例对象不再需要使用时，可以调用这个方法将它移除，以便于释放资源。
 
-<pre>myMiniDialog.show()
-myMiniDialog.hide()
-myMiniDialog.remove()</pre>
+<pre>myTinyDialog.show()
+myTinyDialog.hide()
+myTinyDialog.remove()</pre>
 
 h2. 预设快捷方式
 
