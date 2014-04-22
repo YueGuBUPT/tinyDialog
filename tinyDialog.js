@@ -42,18 +42,28 @@
 	// polyfill outerWidth\outerHeight for Zepto
 	// see https://gist.github.com/pamelafox/1379704#file-zepto-extras-js-L64
 	if(!$.fn.outerWidth || !$.fn.outerHeight){
-		['width', 'height'].forEach(function(dimension) {
-			var offset, Dimension = dimension.replace(/./, function(m) { return m[0].toUpperCase() })
-			$.fn['outer' + Dimension] = function(margin) {
+		$.each(['width', 'height'],function(j,dimension){
+			var offset
+				,Dimension
+			Dimension = dimension.replace(/./,function(m){
+				return m[0].toUpperCase()
+			})
+			$.fn['outer' + Dimension] = function(margin){
 				var elem = this
 				if (elem) {
 					var size = elem[dimension]()
-					var sides = {'width': ['left', 'right'], 'height': ['top', 'bottom']}
-					sides[dimension].forEach(function(side) {
-						if (margin) size += parseInt(elem.css('margin-' + side), 10)
-					});
+						,sides
+					sides = {
+						'width': ['left', 'right'],
+						'height': ['top', 'bottom']
+					}
+					$.each(sides[dimension],function(k,side){
+						if(margin){
+							size += parseInt(elem.css('margin-' + side),10)
+						}
+					})
 					return size
-				} else {
+				}else{
 					return null
 				}
 			}
