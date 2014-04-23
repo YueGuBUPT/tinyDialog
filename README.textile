@@ -17,17 +17,13 @@ h2. 引入页面
 
 tinyDialog基于jQuery或Zepto，将这些js引入你的页面，建议置于 @body@ 结束标签之前
 
-<pre><script src="jquery.js"></script>或<script src="zepto.js"></script>
-<script src="tinyDialog.min.js"></script>
-<!-- 可以使用我们提供的CDN服务器 -->
-<script src="//webmap2.map.bdimg.com/yyfm/jQuery_1.x/1.10.2/js/jQuery_1.x.min.js"></script>或<script src="//webmap2.map.bdimg.com/yyfm/zepto/1.0/js/zepto.min.js"></script>
-<script src="//webmap3.map.bdimg.com/yyfm/tinyDialog/1.0.0/js/tinyDialog.min.js"></script>
-</pre>
+<pre><script src="jQuery.js"></script>
+<!--或<script src="zepto.js"></script>-->
+<script src="tinyDialog.min.js"></script></pre>
+
 另外我们还提供了预设的样式，也请同时引入，建议置于 @head@ 内
 
 <pre><link rel="stylesheet" href="tinyDialog.min.css" />
-<!-- 可以使用我们提供的CDN服务器 -->
-<link rel="stylesheet" href="//webmap3.map.bdimg.com/yyfm/tinyDialog/1.0.0/css/tinyDialog.min.css" /></pre>
 
 同时确保b.png置于 tinyDialog.min.css 同一路径。如果你想将b.png置于其它位置，请参阅 `自定义样式` 节，来覆盖部分样式。
 
