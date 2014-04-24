@@ -2,7 +2,7 @@ h1. tinyDialog
 
 tinyDialog是一个基于jQuery或zepto的轻量级的对话框弹出组件，在压缩和gzip后，js文件大小均为1.4k左右，默认css样式大小在0.8k左右。
 
-它是基于jQuery编写的，也可以用于zepto。适用平台：IE6+、Chorme、FireFox、Opera、Safari、iOS 5.0+、Android 2.2+
+它是基于jQuery编写的，也可以用于Zepto。适用平台：IE6+、Chorme、FireFox、Opera、Safari、iOS 5.0+、Android 2.2+
 
 它的默认样式设计是参考的 "artDialog（基于LGPL协议）":https://github.com/aui/artDialog 的blue 皮肤。
 
@@ -46,6 +46,7 @@ h3. options字段
 * @height@ Number 对话框的宽度，单位像素，默认 @300@
 * @mask@ Boolean 对话框是否有背景遮罩，如果有得话整个背景将被一个半透明黑色层遮住，用户只能和当前对话框交互，默认 @true@
 * @closeX@ Boolean 对话框是否有右上角的关闭按钮（当然可以通过定制css来调整它的位置），默认 @false@
+* @autoShow@ Boolean 对话框初始化后，是否自动显示 @true@
 * @clickCloseX@ Function 点击上述关闭按钮后的回调函数，函数中this指向被点击按钮的DOM，第一个参数e为事件对象，第二个参数tinyDialogObjectInstance为当前tinyDialog实例对象，默认为空函数 @function(e,tinyDialogObjectInstance){}@
 * @init@ Function 当一个新的tinyDialog实例对象初始化完毕后的回调函数，函数中this指向当前tinyDialog实例对象，默认为空函数 @function(){}@
 * @warpperCssClass@ String 对话框最外层DOM的css样式类，默认 @'tinyDialog_wrapper'@

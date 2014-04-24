@@ -44,11 +44,11 @@
 	if(!$.fn.outerWidth || !$.fn.outerHeight){
 		$.each(['width', 'height'],function(j,dimension){
 			var offset
-				,Dimension
-			Dimension = dimension.replace(/./,function(m){
+				,_dimension
+			_dimension = dimension.replace(/./,function(m){
 				return m[0].toUpperCase()
 			})
-			$.fn['outer' + Dimension] = function(margin){
+			$.fn['outer' + _dimension] = function(margin){
 				var elem = this
 				if (elem) {
 					var size = elem[dimension]()
@@ -71,36 +71,37 @@
 	}
 
 	function position(tinyDialog){
-		var this$ = tinyDialog.$,
+		var self = tinyDialog,
+			self$ = self.$,
 			left,
 			top
-		if(this$){
+		if(self$){
 			// When use Zepto & old version jQuery. it can not return `outerWidth` & `outerHeight` When element not show (display:none)
 			// see http://www.dewen.org/q/3610/%E5%A6%82%E4%BD%95%E7%94%A8+Jquery+%E8%8E%B7%E5%8F%96%E9%9A%90%E8%97%8F%E5%85%83%E7%B4%A0%E7%9A%84%E5%AE%BD%E5%BA%A6%E5%B1%9E%E6%80%A7
 			// see https://github.com/jquery/jquery/blob/master/src/css.js#L30
 			if(!self.isShow){
-				this$.css({
+				self$.css({
 					position:'absolute',
 					_position:'absolute',
 					visibility:'hidden',
 					display:'block'
 				})
 			}
-			left = ($window.width()-this$.outerWidth(true))/2,
-			top = ($window.height()-this$.outerHeight(true))/(1+1.61803398875)
+			left = ($window.width()-self$.outerWidth(true))/2,
+			top = ($window.height()-self$.outerHeight(true))/(1+1.61803398875)
 			if(isIE6){
-				this$.css({
+				self$.css({
 					'left':document.documentElement.scrollLeft + left,
 					'top':document.documentElement.scrollTop + top
 				})
 			}else{
-				this$.css({
+				self$.css({
 					'left':left,
 					'top':top
 				})
 			}
 			if(!self.isShow){
-				this$.css({
+				self$.css({
 					position:'fixed',
 					_position:'absolute',
 					visibility:'visible',
