@@ -37,11 +37,13 @@
 		$window = $(window),
 		$mask,
 		maskUserCount = 0,
-		isIE6 = /msie 6/i.test(navigator.userAgent)
+		isIE6 = /msie 6/i.test(navigator.userAgent),
+		polyfilledOuterWidthHeight = false
 
 	// polyfill outerWidth\outerHeight for Zepto
 	// see https://gist.github.com/pamelafox/1379704#file-zepto-extras-js-L64
 	if(!$.fn.outerWidth || !$.fn.outerHeight){
+		polyfilledOuterWidthHeight = true
 		$.each(['width', 'height'],function(j,dimension){
 			var offset
 				,_dimension
@@ -79,10 +81,11 @@
 			// When use Zepto & old version jQuery. it can not return `outerWidth` & `outerHeight` When element not show (display:none)
 			// see http://www.dewen.org/q/3610/%E5%A6%82%E4%BD%95%E7%94%A8+Jquery+%E8%8E%B7%E5%8F%96%E9%9A%90%E8%97%8F%E5%85%83%E7%B4%A0%E7%9A%84%E5%AE%BD%E5%BA%A6%E5%B1%9E%E6%80%A7
 			// see https://github.com/jquery/jquery/blob/master/src/css.js#L30
-			if(!self.isShow){
+			// No need to run when use with jQuery (when polyfilledOuterWidthHeight === false)
+			if(!self.isShow && polyfilledOuterWidthHeight){
 				self$.css({
 					position:'absolute',
-					_position:'absolute',
+					// _position:'absolute',
 					visibility:'hidden',
 					display:'block'
 				})
@@ -100,10 +103,10 @@
 					'top':top
 				})
 			}
-			if(!self.isShow){
+			if(!self.isShow && polyfilledOuterWidthHeight){
 				self$.css({
 					position:'fixed',
-					_position:'absolute',
+					// _position:'absolute',
 					visibility:'visible',
 					display:'none'
 				})
