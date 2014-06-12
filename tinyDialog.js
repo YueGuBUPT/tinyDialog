@@ -117,7 +117,7 @@
 		}
 	}
 	function setMaskWH(){
-		if($mask){
+		if($mask && $mask.css('display') != 'none'){
 			$mask.css({
 				width:$document.width(),
 				height:$document.height()
