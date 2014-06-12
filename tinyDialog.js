@@ -37,7 +37,10 @@
 		$window = $(window),
 		$mask,
 		maskUserCount = 0,
-		isIE6 = /msie 6/i.test(navigator.userAgent),
+		ua = navigator.userAgent,
+		isIE6 = /msie 6/i.test(ua),
+		isIOS = /iphone|ipod|ipad/i.test(ua),
+		// isAndorid = /andorid/i.test(ua),
 		polyfilledOuterWidthHeight = false
 
 	// polyfill outerWidth\outerHeight for Zepto
@@ -113,11 +116,14 @@
 			}
 		}
 	}
-	function setMaskWH($mask){
-		$mask.css({
-			width:$document.width(),
-			height:$document.height()
-		})
+	function setMaskWH(){
+		if($mask){
+			$mask.css({
+				width:$document.width(),
+				height:$document.height()
+			})
+		}
+		setTimeout(setMaskWH,500) // When document's height\width's change, it need call setMaskWH
 	}
 
 	function TinyDialog(options){
@@ -200,14 +206,12 @@
 		if(!this.isShow && this.$){
 			if(this.mask){
 				if($mask){
-					$mask.show()
+					$mask.css('display','block') // replace `$mask.show()` , zepto fx_methods will add `opacity:1` in .show() method ,see https://github.com/madrobby/zepto/blob/master/src/fx_methods.js#L26
 				}else{
 					$mask = $(document.createElement('DIV')).addClass(otherOptions.maskCssClass)
-					if(isIE6){
-						setMaskWH($mask)
-						$window.on('resize',function(){
-							setMaskWH($mask)
-						})
+					if(isIE6 || isIOS){
+						$mask.css('position','absolute')
+						setMaskWH()
 					}
 					$mask.appendTo($body)
 				}
