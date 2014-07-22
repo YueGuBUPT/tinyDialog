@@ -7,8 +7,8 @@
 	var defaultOptions = {
 			title:'消息',
 			content:'',
-			width:200,
-			height:150,
+			width:200, // or string, e.g: '50%'
+			height:150, // or string, e.g: '50%'
 			mask:true,
 			closeX:false,
 			autoShow:true,
@@ -41,7 +41,8 @@
 		isIE6 = /msie 6/i.test(ua),
 		isIOS = /iphone|ipod|ipad/i.test(ua),
 		// isAndorid = /andorid/i.test(ua),
-		polyfilledOuterWidthHeight = false
+		polyfilledOuterWidthHeight = false,
+		type
 
 	// polyfill outerWidth\outerHeight for Zepto
 	// see https://gist.github.com/pamelafox/1379704#file-zepto-extras-js-L64
@@ -74,6 +75,14 @@
 			}
 		})
 	}
+
+	type = (function(){
+        var object_prototype_toString = Object.prototype.toString
+        return function(obj){
+            // todo: compare the speeds of replace string twice or replace a regExp
+            return object_prototype_toString.call(obj).replace('[object ','').replace(']','')
+        }
+    })()
 
 	function position(tinyDialog){
 		var self = tinyDialog,
@@ -134,8 +143,18 @@
 			buttonsCount
 		if($.isPlainObject(options)){
 			$.each(defaultOptions,function(k,v){
-				if(defaultOptions.hasOwnProperty(k) && (!options.hasOwnProperty(k) || (typeof(options[k]) != typeof(defaultOptions[k])))){
-					options[k] = v
+				var typeK
+				if(defaultOptions.hasOwnProperty(k)){
+					typeK = type(options[k])
+					if(k == 'width' || k == 'height'){
+						if(typeK != 'String' && typeK != 'Number'){
+							options[k] = v
+						}
+					}else{
+						if(!options.hasOwnProperty(k) || (typeK != type(defaultOptions[k]))){
+							options[k] = v
+						}
+					}
 				}
 			})
 		}else{
@@ -156,7 +175,7 @@
 		buttonsCount = self.buttons.length
 		$.each(self.buttons,function(i,e){
 			$tmpButton = $(document.createElement('DIV')).addClass(self.buttonCssClass).text(e.value).on('click',function(event){
-				if(e.click && typeof(e.click) == 'function'){
+				if($.isFunction(e.click)){
 					if(e.click.call(this,event,self) !== false){
 						self.hide()
 					}
@@ -177,7 +196,7 @@
 		if(self.closeX){
 			self.$closeX = $(document.createElement('DIV')).addClass(self.closeXCssClass).appendTo(self.$)
 			self.$closeX.on('click',function(event){
-				if(self.clickCloseX && typeof(self.clickCloseX) == 'function'){
+				if($.isFunction(self.clickCloseX)){
 					if(self.clickCloseX.call(this,event,self) !== false){
 						self.hide()
 					}
@@ -196,7 +215,7 @@
 				position(self)
 			})
 		}
-		if(self.init && typeof(self.init) == 'function'){
+		if($.isFunction(self.init)){
 			self.init.call(self)
 		}
 		if(self.autoShow){

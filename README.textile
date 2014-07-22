@@ -4,12 +4,7 @@ tinyDialog是一个基于jQuery或zepto的轻量级的对话框弹出组件，�
 
 它是基于jQuery编写的，也可以用于Zepto。适用平台：IE6+、Chorme、FireFox、Opera、Safari、iOS 5.0+、Android 2.2+
 
-它的默认样式设计是参考的 "artDialog（基于LGPL协议）":https://github.com/aui/artDialog 的blue 皮肤。
-
-h1. 当前用户
-* "百度地图":http://map.baidu.com/
-* "百度团购":http://tuan.baidu.com/
-* +You
+它的默认样式设计是参考的 artDialog（基于LGPL协议）的 blue 皮肤。
 
 h1. 使用方法
 
