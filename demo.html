@@ -112,18 +112,21 @@
 		width:'50%',
 		height:'200'
 		}) -->
-		<textarea id="code">
 		
+		<textarea id="code">
+		tinyDialog({
+			content:'1<br/>2<br/>3<br/>4<br/>1<br/>2<br/>3<br/>4<br/>1<br/>2<br/>3<br/>4<br/>1<br/>2<br/>3<br/>4<br/>1<br/>2<br/>3<br/>4<br/>'
+		})
 		</textarea>
 		<hr>
 		<button id="custom_run">运行</button>
 	</div>
 	<div id="wide_and_long"></div>
 	<script src="http://webmap2.map.bdimg.com/yyfm/jQuery_1.x/1.10.2/js/jQuery_1.x.min.js"></script>
-	<script src="http://webmap2.map.bdimg.com/yyfm/zepto_default/1.1.2/js/zepto_default.min.js"></script>
-	<!--<script src="http://bcs.duapp.com/jieyou-storage/consoleEnable.js"></script>-->
+	<!-- <script src="http://webmap2.map.bdimg.com/yyfm/zepto_default/1.1.2/js/zepto_default.min.js"></script> -->
+	<!-- <script src="http://bcs.duapp.com/jieyou-storage/consoleEnable.js"></script> -->
 	<script src="tinyDialog.js"></script>
-	<!--<script src="http://webmap3.map.bdimg.com/yyfm/tinyDialog/1.0.0/js/tinyDialog.min.js"></script>-->
+	<!-- <script src="http://webmap3.map.bdimg.com/yyfm/tinyDialog/1.0.0/js/tinyDialog.min.js"></script> -->
 	<script>
 		$(function(){
 			var	$code = $('#code')
@@ -204,6 +207,7 @@
 			$('#custom_run').on('click',function(){
 				eval($code.val())
 			})
+			// alert(document.body.style["-webkit-overflow-scrolling"] !== undefined)
 		})
 	</script>
 </body>

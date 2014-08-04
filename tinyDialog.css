@@ -28,6 +28,11 @@
 .tinyDialog_content_outer{
 	padding:6px;
 	height:60px;
+	overflow:scroll; /* iOS 5+ , Andorid 3.0+ (see http://barrow.io/overflow-scrolling `Android Browser`)*/
+	-webkit-overflow-scrolling:touch;/* iOS 5+ , Andorid 4.2+ / Chrome for Andorid 4.0+ */
+	-moz-overflow-scrolling:touch;
+	-ms-overflow-scrolling:touch;
+	overflow-scrolling:touch;
 }
 .tinyDialog_content{
 	display: table-cell;

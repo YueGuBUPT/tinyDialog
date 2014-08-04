@@ -31,6 +31,7 @@
 		},
 		otherOptions = {
 			maskCssClass:'tinyDialog_mask'
+			// ,backgroundScroll:true
 		},
 		$body = $('body'),
 		$document = $(document),
@@ -77,12 +78,12 @@
 	}
 
 	type = (function(){
-        var object_prototype_toString = Object.prototype.toString
-        return function(obj){
-            // todo: compare the speeds of replace string twice or replace a regExp
-            return object_prototype_toString.call(obj).replace('[object ','').replace(']','')
-        }
-    })()
+		var object_prototype_toString = Object.prototype.toString
+		return function(obj){
+			// todo: compare the speeds of replace string twice or replace a regExp
+			return object_prototype_toString.call(obj).replace('[object ','').replace(']','')
+		}
+	})()
 
 	function position(tinyDialog){
 		var self = tinyDialog,
@@ -206,6 +207,21 @@
 			})
 		}
 		self.$.appendTo($body)
+		// if(!otherOptions.backgroundScroll){
+		// 	self.$title.on('touchmove',function(e){
+		// 		return false
+		// 	})
+			// self.$contentOuter.on('touchmove',function(e){
+			// 	// var target = e.target||e.srcElement
+			// 	// var contentOuterNode = self.$contentOuter[0]
+			// 	console.log(self.$content.scrollTop())
+			// 	// e.stopPropagation()
+			// 	// return $.contains(contentOuterNode,target) || contentOuterNode == target
+			// })
+		// 	self.$buttonsArea.on('touchmove',function(e){
+		// 		return false
+		// 	})
+		// }
 		position(self)
 		$window.on('resize',function(){
 			position(self)
@@ -242,6 +258,11 @@
 						})
 					}
 					$mask.appendTo($body)
+					// if(!otherOptions.backgroundScroll){
+					// 	$mask.on('touchmove',function(){
+					// 		return false
+					// 	})
+					// }
 				}
 				maskUserCount++
 			}
