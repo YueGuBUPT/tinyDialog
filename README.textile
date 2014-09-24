@@ -1,6 +1,6 @@
 h1. tinyDialog
 
-tinyDialog是一个基于jQuery或zepto的轻量级的对话框弹出组件，在压缩和gzip后，js文件大小均为1.4k左右，默认css样式大小在0.8k左右。
+tinyDialog是一个基于jQuery或zepto的轻量级的对话框弹出组件。
 
 它是基于jQuery编写的，也可以用于Zepto。适用平台：IE6+、Chorme、FireFox、Opera、Safari、iOS 5.0+、Android 2.2+
 
@@ -19,7 +19,7 @@ tinyDialog基于jQuery或Zepto，将这些js引入你的页面，建议置于 @b
 你也可以通过AMD模块加载器来引入，如：
 
 <pre>
-define(['jquery','tinyDialog'],function($,tinyDialog){
+define(['jquery','tinyDialog'],function($,tinyDialog){ // 'jquery' 也可以是 'zepto'
 })
 // 或 
 require(['jquery','tinyDialog'],function($,tinyDialog){
@@ -123,6 +123,8 @@ h3. 自定义样式
 
 <pre>.tinyDialog_wrapper{font-size:12px;}</pre>
 
+当然，最简单的方法，就是直接修改tinyDialog.css，然后再在头部引入它
+
 h2. 实例方法
 
 通过调用tinyDialog(options)或下面的“预设快捷方式”，将返回一个tinyDialog实例对象，如：
@@ -142,8 +144,8 @@ h2. 实例方法
 myTinyDialog.hide()
 myTinyDialog.remove()
 myTinyDialog.updateTitleOrContent({
-	title:'new Title'
-	,content:'new Content'
+    title:'new Title'
+    ,content:'new Content'
 })</pre>
 
 h2. 预设快捷方式
