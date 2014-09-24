@@ -3,7 +3,17 @@
  * contacts:baidu hi->guyuebupt
  * see https://github.com/YueGuBUPT/tinyDialog
  */
-;(function($,document,window){
+;(function(factory){
+    if(typeof define === 'function' && define.amd){ // AMD
+        // you may need to change `define([------>'jquery'<------], factory)` 
+        // if you use zepto, change it rely name, such as `define(['zepto'], factory)`
+        // if your jquery|zepto lib is in other path, change it such as `define(['lib\jquery.min'], factory)` ,or use `requirejs paths config`
+        define(['jquery'], factory)
+    }else{ // Global
+        factory(jQuery || Zepto)
+    }
+})(function($){
+	var d = document,w = window
 	var defaultOptions = {
 			title:'消息',
 			content:'',
@@ -25,7 +35,7 @@
 			closeXCssClass:'tinyDialog_close_x',
 			buttons:[
 				{
-					'value':'确定'
+					value:'确定'
 				}
 			]
 		},
@@ -34,8 +44,8 @@
 			// ,backgroundScroll:true
 		},
 		$body = $('body'),
-		$document = $(document),
-		$window = $(window),
+		$d = $(d),
+		$w = $(w),
 		$mask,
 		maskUserCount = 0,
 		ua = navigator.userAgent,
@@ -61,8 +71,8 @@
 					var size = elem[dimension]()
 						,sides
 					sides = {
-						'width': ['left', 'right'],
-						'height': ['top', 'bottom']
+						width: ['left', 'right'],
+						height: ['top', 'bottom']
 					}
 					$.each(sides[dimension],function(k,side){
 						if(margin){
@@ -103,17 +113,17 @@
 					display:'block'
 				})
 			}
-			left = ($window.width()-self$.outerWidth(true))/2,
-			top = ($window.height()-self$.outerHeight(true))/(1+1.61803398875)
+			left = ($w.width()-self$.outerWidth(true))/2,
+			top = ($w.height()-self$.outerHeight(true))/(1+1.61803398875)
 			if(isIE6){
 				self$.css({
-					'left':document.documentElement.scrollLeft + left,
-					'top':document.documentElement.scrollTop + top
+					left:d.documentElement.scrollLeft + left,
+					top:d.documentElement.scrollTop + top
 				})
 			}else{
 				self$.css({
-					'left':left,
-					'top':top
+					left:left,
+					top:top
 				})
 			}
 			if(!self.isShow && polyfilledOuterWidthHeight){
@@ -129,8 +139,8 @@
 	function setMaskWH(){
 		if($mask){ // && $mask.css('display') != 'none'){
 			$mask.css({
-				width:$document.width(),
-				height:$document.height()
+				width:$d.width(),
+				height:$d.height()
 			})
 		}
 		// setTimeout(setMaskWH,500) // When document's height\width's change, it need call setMaskWH
@@ -165,17 +175,21 @@
 			self[k] = v
 		})
 		self.isShow = false
-		self.$ = $(document.createElement('DIV')).addClass(self.warpperCssClass).css({
-			'width':self.width,
-			'height':self.height
+		self.$ = $(d.createElement('DIV')).addClass(self.warpperCssClass).css({
+			width:self.width,
+			height:self.height
 		})
-		self.$title = $(document.createElement('DIV')).addClass(self.titleCssClass).html(self.title).appendTo(self.$)
-		self.$contentOuter = $(document.createElement('DIV')).addClass(self.contentOuterCssClass).appendTo(self.$)
-		self.$content = $(document.createElement('DIV')).addClass(self.contentCssClass).html(self.content).appendTo(self.$contentOuter)
+		// self.$title = $(d.createElement('DIV')).addClass(self.titleCssClass).html(self.title).appendTo(self.$)
+		// self.$contentOuter = $(d.createElement('DIV')).addClass(self.contentOuterCssClass).appendTo(self.$)
+		// self.$content = $(d.createElement('DIV')).addClass(self.contentCssClass).html(self.content).appendTo(self.$contentOuter)
+		self.updateTitleOrContent({
+			title:self.title
+			,content:self.content
+		},true)
 		tmp = []
 		buttonsCount = self.buttons.length
 		$.each(self.buttons,function(i,e){
-			$tmpButton = $(document.createElement('DIV')).addClass(self.buttonCssClass).text(e.value).on('click',function(event){
+			$tmpButton = $(d.createElement('DIV')).addClass(self.buttonCssClass).text(e.value).on('click',function(event){
 				if($.isFunction(e.click)){
 					if(e.click.call(this,event,self) !== false){
 						self.hide()
@@ -192,10 +206,10 @@
 			}
 			tmp.push($tmpButton)
 		})
-		self.$buttonsArea = $(document.createElement('DIV')).addClass(self.buttonsAreaCssClass)
+		self.$buttonsArea = $(d.createElement('DIV')).addClass(self.buttonsAreaCssClass)
 		self.$buttonsArea.append.apply(self.$buttonsArea,tmp).appendTo(self.$)
 		if(self.closeX){
-			self.$closeX = $(document.createElement('DIV')).addClass(self.closeXCssClass).appendTo(self.$)
+			self.$closeX = $(d.createElement('DIV')).addClass(self.closeXCssClass).appendTo(self.$)
 			self.$closeX.on('click',function(event){
 				if($.isFunction(self.clickCloseX)){
 					if(self.clickCloseX.call(this,event,self) !== false){
@@ -223,11 +237,11 @@
 		// 	})
 		// }
 		position(self)
-		$window.on('resize',function(){
+		$w.on('resize',function(){
 			position(self)
 		})
 		if(isIE6){
-			$window.on('scroll',function(){
+			$w.on('scroll',function(){
 				position(self)
 			})
 		}
@@ -244,11 +258,11 @@
 				if($mask){
 					$mask.css('display','block') // replace `$mask.show()` , zepto fx_methods will add `opacity:1` in .show() method ,see https://github.com/madrobby/zepto/blob/master/src/fx_methods.js#L26
 				}else{
-					$mask = $(document.createElement('DIV')).addClass(otherOptions.maskCssClass)
+					$mask = $(d.createElement('DIV')).addClass(otherOptions.maskCssClass)
 					if(isIE6){
 						$mask.css('position','absolute')
 						setMaskWH()
-						$window.on('resize',setMaskWH)
+						$w.on('resize',setMaskWH)
 					}else if(isIOS){
 						$mask.css({
 							left:'-300%',
@@ -290,6 +304,32 @@
 		this.$.remove()
 	}
 
+	TinyDialog.prototype.updateTitleOrContent = function(obj,forcePosition){
+		var updateAny = false
+			,self = this
+		if(obj.hasOwnProperty('title') && type(obj.title) == 'String'){
+			if(self.$title){
+				self.$title.remove()
+			}
+			self.$title = $(d.createElement('DIV')).addClass(self.titleCssClass).html(self.title).appendTo(self.$)
+			updateAny = true
+		}
+		if(obj.hasOwnProperty('content') && type(obj.content) == 'String'){
+			if(self.$content){
+				self.$content.remove()
+			}
+			if(self.$contentOuter){
+				self.$contentOuter.remove()
+			}
+			self.$contentOuter = $(d.createElement('DIV')).addClass(self.contentOuterCssClass).appendTo(self.$)
+			self.$content = $(d.createElement('DIV')).addClass(self.contentCssClass).html(self.content).appendTo(self.$contentOuter)
+			updateAny = true
+		}
+		if(updateAny || forcePosition){
+			position(self)
+		}
+	}
+
 	function out(options){
 		return new TinyDialog(options)
 	}
@@ -302,9 +342,11 @@
 			content:msg,
 			buttons:[
 				{
-					'value':'确定',
-					'click':function(e,tinyDialogObjectInstance){
-						okFunction.call(this,e,tinyDialogObjectInstance)
+					value:'确定',
+					click:function(e,tinyDialogObjectInstance){
+						if($.isFunction(okFunction)){
+							okFunction.call(this,e,tinyDialogObjectInstance)	
+						}
 						if(!noRemoveWhenClose){
 							tinyDialogObjectInstance.remove()
 						}
@@ -318,19 +360,23 @@
 			content:msg,
 			buttons:[
 				{
-					'value':'确定',
-					'click':function(e,tinyDialogObjectInstance){
-						okFunction.call(this,e,tinyDialogObjectInstance)
+					value:'确定',
+					click:function(e,tinyDialogObjectInstance){
+						if($.isFunction(okFunction)){
+							okFunction.call(this,e,tinyDialogObjectInstance)
+						}
 						if(!noRemoveWhenClose){
 							tinyDialogObjectInstance.remove()
 						}
 					}
 				},
 				{
-					'value':'取消',
-					'type':'secondary',
-					'click':function(e,tinyDialogObjectInstance){
-						cancelFunction.call(this,e,tinyDialogObjectInstance)
+					value:'取消',
+					type:'secondary',
+					click:function(e,tinyDialogObjectInstance){
+						if($.isFunction(cancelFunction)){
+							cancelFunction.call(this,e,tinyDialogObjectInstance)
+						}
 						if(!noRemoveWhenClose){
 							tinyDialogObjectInstance.remove()
 						}
@@ -345,19 +391,23 @@
 			content:['<div style="margin-bottom:5px">',msg,'</div><div><input class="',inputClass,'" style="width:175px;padding:6px 4px" value="',defaultPrompt,'"/></div>'].join(''),
 			buttons:[
 				{
-					'value':'确定',
-					'click':function(e,tinyDialogObjectInstance){
-						okFunction.call(this,e,tinyDialogObjectInstance,tinyDialogObjectInstance.$content.find('input.'+inputClass).val())
+					value:'确定',
+					click:function(e,tinyDialogObjectInstance){
+						if($.isFunction(okFunction)){
+							okFunction.call(this,e,tinyDialogObjectInstance,tinyDialogObjectInstance.$content.find('input.'+inputClass).val())
+						}
 						if(!noRemoveWhenClose){
 							tinyDialogObjectInstance.remove()
 						}
 					}
 				},
 				{
-					'value':'取消',
-					'type':'secondary',
-					'click':function(e,tinyDialogObjectInstance){
-						cancelFunction.call(this,e,tinyDialogObjectInstance,tinyDialogObjectInstance.$content.find('input.'+inputClass).val())
+					value:'取消',
+					type:'secondary',
+					click:function(e,tinyDialogObjectInstance){
+						if($.isFunction(cancelFunction)){
+							cancelFunction.call(this,e,tinyDialogObjectInstance,tinyDialogObjectInstance.$content.find('input.'+inputClass).val())
+						}
 						if(!noRemoveWhenClose){
 							tinyDialogObjectInstance.remove()
 						}
@@ -368,5 +418,10 @@
 	}
 
 	// $(new Image()).attr('src','b.png')
-	window.tinyDialog = out
-})($,document,window)
+	
+	if(typeof define === 'function' && define.amd){ // AMD
+        return out
+    }else{ // Global
+        w.tinyDialog = out
+    }
+})

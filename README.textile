@@ -16,6 +16,15 @@ tinyDialog基于jQuery或Zepto，将这些js引入你的页面，建议置于 @b
 <!--或<script src="zepto.js"></script>-->
 <script src="tinyDialog.min.js"></script></pre>
 
+你也可以通过AMD模块加载器来引入，如：
+
+<pre>
+define(['jquery','tinyDialog'],function($,tinyDialog){
+})
+// 或 
+require(['jquery','tinyDialog'],function($,tinyDialog){
+})</pre>
+
 另外我们还提供了预设的样式，也请同时引入，建议置于 @head@ 内
 
 <pre><link rel="stylesheet" href="tinyDialog.min.css" /></pre>
@@ -123,14 +132,19 @@ h2. 实例方法
     'content':'这是我的tinyDialog实例对象'
 })</pre>
 
-目前它有三个方法
-* show() 显示
-* hide() 隐藏，隐藏当前tinyDialog实例对象，如果所有需要背景遮罩（mask）的tinyDialog实例对象都已经隐藏，则背景遮罩也会隐藏
-* remove() 移除，当确定该tinyDialog实例对象不再需要使用时，可以调用这个方法将它移除，以便于释放资源。
+目前它有四个方法
+* show 显示
+* hide 隐藏，隐藏当前tinyDialog实例对象，如果所有需要背景遮罩（mask）的tinyDialog实例对象都已经隐藏，则背景遮罩也会隐藏
+* remove 移除，当确定该tinyDialog实例对象不再需要使用时，可以调用这个方法将它移除，以便于释放资源。
+* updateTitleOrContent 在创建了该tinyDialog实例对象之后，再次更改它的title或content
 
 <pre>myTinyDialog.show()
 myTinyDialog.hide()
-myTinyDialog.remove()</pre>
+myTinyDialog.remove()
+myTinyDialog.updateTitleOrContent({
+	title:'new Title'
+	,content:'new Content'
+})</pre>
 
 h2. 预设快捷方式
 
