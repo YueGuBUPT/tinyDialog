@@ -44,8 +44,9 @@ h3. options字段
 
 下面是options的全部字段：
 
-* @title@ String 对话框的标题，可以为任意html字符串默认为 @'消息'@
-* @content@ String 对话框的内容，可以为任意html字符串默认为 @''@
+* @id@ String 对话框最外层DOM（即wrapper）的id，可以为任意字符串，当类型不为字符串或字符串长度为0时，不设置id，默认 @null@
+* @title@ String 对话框的标题，可以为任意html字符串，默认 @'消息'@
+* @content@ String 对话框的内容，可以为任意html字符，默认 @''@
 * @width@ Number 对话框的宽度，单位像素，默认 @300@
 * @height@ Number 对话框的宽度，单位像素，默认 @300@
 * @mask@ Boolean 对话框是否有背景遮罩，如果有得话整个背景将被一个半透明黑色层遮住，用户只能和当前对话框交互，默认 @true@

@@ -4,17 +4,18 @@
  * see https://github.com/YueGuBUPT/tinyDialog
  */
 ;(function(factory){
-    if(typeof define === 'function' && define.amd){ // AMD
-        // you may need to change `define([------>'jquery'<------], factory)` 
-        // if you use zepto, change it rely name, such as `define(['zepto'], factory)`
-        // if your jquery|zepto lib is in other path, change it such as `define(['lib\jquery.min'], factory)` ,or use `requirejs paths config`
-        define(['jquery'], factory)
-    }else{ // Global
-        factory(jQuery || Zepto)
-    }
+	if(typeof define === 'function' && define.amd){ // AMD
+		// you may need to change `define([------>'jquery'<------], factory)` 
+		// if you use zepto, change it rely name, such as `define(['zepto'], factory)`
+		// if your jquery|zepto lib is in other path, change it such as `define(['lib\jquery.min'], factory)` ,or use `requirejs paths config`
+		define(['jquery'], factory)
+	}else{ // Global
+		factory(jQuery || Zepto)
+	}
 })(function($){
 	var d = document,w = window
 	var defaultOptions = {
+			id:null,
 			title:'消息',
 			content:'',
 			width:200, // or string, e.g: '50%'
@@ -161,6 +162,10 @@
 						if(typeK != 'String' && typeK != 'Number'){
 							options[k] = v
 						}
+					}else if(k == 'id'){
+						if(typeK != 'String' || options[k].length == 0){
+							options[k] = v
+						}
 					}else{
 						if(!options.hasOwnProperty(k) || (typeK != type(defaultOptions[k]))){
 							options[k] = v
@@ -179,6 +184,9 @@
 			width:self.width,
 			height:self.height
 		})
+		if(type(self.id) == 'String'){
+			self.$.attr('id',self.id)
+		}
 		// self.$title = $(d.createElement('DIV')).addClass(self.titleCssClass).html(self.title).appendTo(self.$)
 		// self.$contentOuter = $(d.createElement('DIV')).addClass(self.contentOuterCssClass).appendTo(self.$)
 		// self.$content = $(d.createElement('DIV')).addClass(self.contentCssClass).html(self.content).appendTo(self.$contentOuter)
@@ -420,8 +428,8 @@
 	// $(new Image()).attr('src','b.png')
 	
 	if(typeof define === 'function' && define.amd){ // AMD
-        return out
-    }else{ // Global
-        w.tinyDialog = out
+		return out
+	}else{ // Global
+		w.tinyDialog = out
     }
 })
